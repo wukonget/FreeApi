@@ -3,12 +3,12 @@ package com.peng.freeapi.activitys
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.support.v4.view.ViewPager
 import com.peng.freeapi.R
 import com.peng.freeapi.adapter.PictureViewAdapter
 import com.peng.freeapi.model.ImageModel
 import kotlinx.android.synthetic.main.pictureview.*
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 图片查看
@@ -20,11 +20,12 @@ class PictureViewActivity : BaseActivity() {
     var position = -1
 
     companion object Factory {
-        fun launch(mActivity: Activity, mImageList: ArrayList<ImageModel>, position: Int) {
-            val intent = Intent(mActivity,PictureViewActivity::class.java)
-            intent.putParcelableArrayListExtra(mActivity.getString(R.string.pictureView_tag_images),mImageList)
-            intent.putExtra(mActivity.getString(R.string.pictureView_tag_index),position)
-            mActivity.startActivity(intent)
+        fun launch(activity: Activity, mImageList: ArrayList<ImageModel>, position: Int) {
+
+            val intent = Intent(activity,PictureViewActivity::class.java)
+            intent.putParcelableArrayListExtra(activity.getString(R.string.pictureView_tag_images),mImageList)
+            intent.putExtra(activity.getString(R.string.pictureView_tag_index),position)
+            activity.startActivity(intent)
         }
     }
 
@@ -34,11 +35,24 @@ class PictureViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pictureview)
         initViews()
+
     }
 
     private fun initViews() {
 
         pictureViewAdapter = PictureViewAdapter(this@PictureViewActivity)
+        pictureViewPager.addOnPageChangeListener(object:ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                index.text = "${position+1} / ${images.size}"
+            }
+
+        })
         pictureViewPager.adapter = pictureViewAdapter
 
         refreshData()
@@ -52,6 +66,7 @@ class PictureViewActivity : BaseActivity() {
             adapter.mImages = images
             adapter.notifyDataSetChanged()
             pictureViewPager.currentItem = position
+            index.text = "${position+1} / ${images.size}"
         }
 
     }

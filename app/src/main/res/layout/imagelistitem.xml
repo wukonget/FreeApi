@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/pictureViewPager"
         android:layout_margin="@dimen/margin2"
         android:layout_width="match_parent"
         android:scaleType="centerCrop"

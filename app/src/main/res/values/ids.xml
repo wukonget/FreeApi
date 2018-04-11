@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="pictureView_tag_view" type="id">pictureViewTag</item>
+</resources>

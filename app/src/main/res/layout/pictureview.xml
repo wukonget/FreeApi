@@ -4,8 +4,20 @@
     android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager
+        android:background="@android:color/black"
         android:id="@+id/pictureViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/index"
+        android:layout_marginTop="@dimen/margin24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin12"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/thirty_black_corner"
+        android:textColor="@color/textColor_white"
+        />
 
 </RelativeLayout>

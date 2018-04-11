@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
+import com.peng.freeapi.R
 import com.peng.freeapi.model.ImageModel
 
 
@@ -26,12 +27,13 @@ class PictureViewAdapter(activity:Activity, images : ArrayList<ImageModel> = Arr
 
         val url = mImages[position].url
         val photoView = PhotoView(mActivity)
+        photoView.id = R.id.pictureView_tag_view
         Glide.with(mActivity)
                 .load(url)
                 .into(photoView)
         container.addView(photoView)
         photoView.setOnClickListener{
-            mActivity.finish()
+            mActivity.onBackPressed()
         }
         return photoView
     }

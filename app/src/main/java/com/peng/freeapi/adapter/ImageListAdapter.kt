@@ -25,12 +25,6 @@ class ImageListAdapter(activity: Activity, nameList: ArrayList<ImageModel> = Arr
     }
 
     override fun onBindViewHolder(holder: ImageListHolder, position: Int) {
-//        val width = CommonUtil.getScreenWidth(mContext)/2-4
-//        val height = (width*(1+ Math.random())).toInt()
-//        var layoutParams = holder.image.layoutParams
-//        layoutParams.width = width
-//        layoutParams.height = height
-//        holder.image.layoutParams = layoutParams
 
         holder.image.setOnClickListener {
             if(mImageList.size>position) {
@@ -55,6 +49,6 @@ class ImageListAdapter(activity: Activity, nameList: ArrayList<ImageModel> = Arr
 
 
     class ImageListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var image = itemView.image
+        var image = itemView.pictureViewPager
     }
 }
