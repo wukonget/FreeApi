@@ -11,7 +11,7 @@ interface GetRequest_Interface {
     @GET("femaleNameApi?page=1")
     fun getNameList() : Call<DataResponse<ArrayList<Name>>>
 
-    @GET("meituApi?page=2")
+    @GET("meituApi?page=4")
     fun getImageList() : Call<DataResponse<ArrayList<ImageModel>>>
 
 }

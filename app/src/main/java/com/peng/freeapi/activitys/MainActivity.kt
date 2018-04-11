@@ -1,4 +1,4 @@
-package com.peng.freeapi
+package com.peng.freeapi.activitys
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -8,25 +8,30 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.peng.freeapi.R
 import com.peng.freeapi.fragments.ImageListFragment
 import com.peng.freeapi.fragments.NameListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+/**
+ * 首页
+ */
+
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         collapsingToolbarLayout.title = getString(R.string.app_name)
-        collapsingToolbarLayout.setExpandedTitleColor(resources.getColor(R.color.colorPrimary))
+        collapsingToolbarLayout.setExpandedTitleColor(resources.getColor(R.color.colorAccent))
 
         setViewPagerAndTab()
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "提示", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+//        fab.setOnClickListener { view ->
+//            Snackbar.make(view, "提示", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show()
+//        }
     }
 
     private fun setViewPagerAndTab() {
@@ -42,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         pagerList.add(nameListFragment)
         pagerList.add(imageListFragment)
 
-        viewpager.adapter = ViewPagerAdapter(titles,pagerList,supportFragmentManager)
+        viewpager.adapter = ViewPagerAdapter(titles, pagerList, supportFragmentManager)
 
         tabLayout.setupWithViewPager(viewpager,true)
 

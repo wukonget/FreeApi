@@ -60,16 +60,15 @@ class ImageListFragment : Fragment() {
 
             override fun onResponse(call: Call<DataResponse<ArrayList<ImageModel>>>?, response: Response<DataResponse<ArrayList<ImageModel>>>?) {
                 mSwipeRefreshLayout.isRefreshing = false
-                Toast.makeText(context, "请求成功，共${response?.body()?.data?.size}条数据", Toast.LENGTH_SHORT).show()
                 var adapter: ImageListAdapter
                 if (mListView.adapter != null) {
                     adapter = mListView.adapter as ImageListAdapter
                     adapter.setData(response?.body()?.data)
                 } else {
                     adapter = if (response === null || response.body() === null) {
-                        ImageListAdapter(context!!)
+                        ImageListAdapter(activity!!)
                     } else {
-                        ImageListAdapter(context!!, response.body()!!.data)
+                        ImageListAdapter(activity!!, response.body()!!.data)
                     }
                 }
                 mListView.adapter = adapter

@@ -1,23 +1,23 @@
 package com.peng.freeapi.adapter
 
-import android.content.Context
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.peng.freeapi.R
+import com.peng.freeapi.activitys.PictureViewActivity
 import com.peng.freeapi.model.ImageModel
-import com.peng.freeapi.utils.CommonUtil
 import kotlinx.android.synthetic.main.imagelistitem.view.*
 import java.util.*
 
-class ImageListAdapter(context: Context, nameList: ArrayList<ImageModel> = ArrayList<ImageModel>()) : RecyclerView.Adapter<ImageListAdapter.ImageListHolder>() {
+class ImageListAdapter(activity: Activity, nameList: ArrayList<ImageModel> = ArrayList<ImageModel>()) : RecyclerView.Adapter<ImageListAdapter.ImageListHolder>() {
 
-    private var mContext = context
+    private var mActivity = activity
     private var mImageList = nameList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageListHolder {
-        return ImageListHolder(View.inflate(mContext, R.layout.imagelistitem, null))
+        return ImageListHolder(View.inflate(mActivity, R.layout.imagelistitem, null))
     }
 
     override fun getItemCount(): Int {
@@ -31,9 +31,17 @@ class ImageListAdapter(context: Context, nameList: ArrayList<ImageModel> = Array
 //        layoutParams.width = width
 //        layoutParams.height = height
 //        holder.image.layoutParams = layoutParams
-        Glide.with(mContext)
+
+        holder.image.setOnClickListener {
+            if(mImageList.size>position) {
+                PictureViewActivity.launch(mActivity, mImageList, position)
+            }
+        }
+
+        Glide.with(mActivity)
                 .load(mImageList[position].url)
                 .into(holder.image)
+
 
     }
 
