@@ -3,7 +3,6 @@ package com.peng.freeapi.utils
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
-import android.widget.Toast
 import com.peng.freeapi.MyApplication
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
