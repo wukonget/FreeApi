@@ -3,6 +3,7 @@ package com.peng.freeapi.activitys
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -22,7 +23,7 @@ import com.peng.freeapi.utils.CommonUtil
  * 首页
  */
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val QR_CODE = 111
 
@@ -58,6 +59,8 @@ class MainActivity : BaseActivity() {
 
         tabLayout.setupWithViewPager(viewpager,true)
 
+        navigationView.setNavigationItemSelectedListener(this@MainActivity)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,6 +76,19 @@ class MainActivity : BaseActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        return when(item.itemId){
+            R.id.toJoke -> {
+                CommonUtil.showToast("去段子页面")
+                true
+            }
+            else -> false
+        }
+
+
     }
 
     /**

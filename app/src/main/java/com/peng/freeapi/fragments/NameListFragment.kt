@@ -30,7 +30,7 @@ class NameListFragment : Fragment() {
         val view = inflater.inflate(R.layout.namelistfragment, container, false)
 
         mListView = view.nameListView
-        mListView.setLimitNumberToCallLoadMore(2)
+//        mListView.setLimitNumberToCallLoadMore(2)
         mListView.setRefreshProgressStyle(ProgressStyle.BallClipRotateMultiple)
         mListView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
