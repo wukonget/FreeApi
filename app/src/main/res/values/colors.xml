@@ -3,7 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <!--<color name="colorAccent">#FF4081</color>-->
-    <color name="colorAccent">@android:color/holo_green_light</color>
+    <color name="colorAccent">@android:color/holo_green_dark</color>
     <color name="thirty_black">#4c000000</color>
     <color name="textColor_white">#deffffff</color>
+    <color name="textColor_black">#de000000</color>
 </resources>

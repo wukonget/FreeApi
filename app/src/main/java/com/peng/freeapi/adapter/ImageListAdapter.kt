@@ -10,6 +10,7 @@ import com.peng.freeapi.activitys.PictureViewActivity
 import com.peng.freeapi.model.ImageModel
 import kotlinx.android.synthetic.main.imagelistitem.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ImageListAdapter(activity: Activity, nameList: ArrayList<ImageModel> = ArrayList<ImageModel>()) : RecyclerView.Adapter<ImageListAdapter.ImageListHolder>() {
 
@@ -45,6 +46,12 @@ class ImageListAdapter(activity: Activity, nameList: ArrayList<ImageModel> = Arr
         } else {
             mImageList = imageList!!
         }
+        notifyDataSetChanged()
+    }
+
+    fun addData(data: ArrayList<ImageModel>) {
+        mImageList.addAll(data)
+        notifyDataSetChanged()
     }
 
 

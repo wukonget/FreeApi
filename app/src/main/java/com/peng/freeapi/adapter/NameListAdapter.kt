@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.peng.freeapi.R
 import com.peng.freeapi.model.Name
 import kotlinx.android.synthetic.main.namelistitem.view.*
-import java.util.zip.Inflater
 
 class NameListAdapter(context: Context, nameList: ArrayList<Name> = ArrayList<Name>()) : RecyclerView.Adapter<NameListAdapter.NameListHolder>() {
 
@@ -35,6 +34,11 @@ class NameListAdapter(context: Context, nameList: ArrayList<Name> = ArrayList<Na
         }else {
             mNameList = namelist!!
         }
+        notifyDataSetChanged()
+    }
+
+    fun addData(data: ArrayList<Name>) {
+        mNameList.addAll(data)
         notifyDataSetChanged()
     }
 

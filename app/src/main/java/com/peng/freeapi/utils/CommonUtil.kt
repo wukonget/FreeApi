@@ -27,4 +27,14 @@ object CommonUtil {
         }
         toast!!.show()
     }
+
+    fun findMax(lastPositions: IntArray): Int {
+        var max = lastPositions[0]
+        for (value in lastPositions) {
+            if (value > max) {
+                max = value
+            }
+        }
+        return max
+    }
 }
