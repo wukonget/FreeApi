@@ -1,5 +1,7 @@
 package com.peng.freeapi.utils
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
@@ -36,5 +38,21 @@ object CommonUtil {
             }
         }
         return max
+    }
+
+    fun showLoading(context:Context) : Dialog {
+
+       val loadingDialog = AlertDialog.Builder(context)
+                .setMessage("加载中")
+                .create()
+        loadingDialog.show()
+        return loadingDialog
+
+    }
+
+    fun dismissLoading(loadingDialog:Dialog){
+        if(loadingDialog!==null && loadingDialog.isShowing){
+            loadingDialog.dismiss()
+        }
     }
 }

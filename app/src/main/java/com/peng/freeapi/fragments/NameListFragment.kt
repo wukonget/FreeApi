@@ -1,5 +1,6 @@
 package com.peng.freeapi.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.peng.freeapi.R
 import com.peng.freeapi.adapter.NameListAdapter
 import com.peng.freeapi.interfaces.GetRequest_Interface
+import com.peng.freeapi.model.SimpleDividerLinear
 import com.peng.freeapi.model.DataResponse
 import com.peng.freeapi.model.Name
 import com.peng.freeapi.utils.CommonUtil
@@ -24,6 +26,7 @@ class NameListFragment : Fragment() {
 
     lateinit var mListView: XRecyclerView
     var mCurrentPage: Int = 1
+    lateinit var loadingDialog : Dialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -32,6 +35,7 @@ class NameListFragment : Fragment() {
         mListView = view.nameListView
 //        mListView.setLimitNumberToCallLoadMore(2)
         mListView.setRefreshProgressStyle(ProgressStyle.BallClipRotateMultiple)
+        mListView.addItemDecoration(SimpleDividerLinear(context!!))
         mListView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         mListView.setLoadingListener(object : XRecyclerView.LoadingListener {
@@ -47,6 +51,8 @@ class NameListFragment : Fragment() {
 
         loadData(1)
 
+        loadingDialog = CommonUtil.showLoading(context!!)
+
         return view
     }
 
@@ -60,7 +66,7 @@ class NameListFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<DataResponse<ArrayList<Name>>>?, response: Response<DataResponse<ArrayList<Name>>>?) {
-                var adapter: NameListAdapter
+                val adapter: NameListAdapter
                 if (mListView.adapter != null) {
                     adapter = mListView.adapter as NameListAdapter
                     if (page === 1) {
@@ -75,6 +81,7 @@ class NameListFragment : Fragment() {
                     } else {
                         NameListAdapter(context!!, response.body()!!.data)
                     }
+                    CommonUtil.dismissLoading(loadingDialog)
                     mListView.adapter = adapter
                 }
 

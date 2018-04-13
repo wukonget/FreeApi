@@ -11,8 +11,10 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.peng.freeapi.R
 import com.peng.freeapi.adapter.ImageListAdapter
 import com.peng.freeapi.interfaces.GetRequest_Interface
+import com.peng.freeapi.model.SimpleDividerLinear
 import com.peng.freeapi.model.DataResponse
 import com.peng.freeapi.model.ImageModel
+import com.peng.freeapi.model.SimpleDividerGrid
 import com.peng.freeapi.utils.CommonUtil
 import com.peng.freeapi.utils.NetUtil
 import kotlinx.android.synthetic.main.namelistfragment.view.*
@@ -32,6 +34,7 @@ class ImageListFragment : Fragment() {
         mListView = view.nameListView
 //        mListView.setLimitNumberToCallLoadMore(2)
         mListView.setRefreshProgressStyle(ProgressStyle.BallClipRotateMultiple)
+        mListView.addItemDecoration(SimpleDividerGrid(context!!))
         mListView.layoutManager = GridLayoutManager(context,2,GridLayoutManager.VERTICAL,false)
 
         mListView.setLoadingListener(object : XRecyclerView.LoadingListener{
