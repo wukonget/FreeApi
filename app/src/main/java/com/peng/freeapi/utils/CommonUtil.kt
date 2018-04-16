@@ -50,8 +50,8 @@ object CommonUtil {
 
     }
 
-    fun dismissLoading(loadingDialog:Dialog){
-        if(loadingDialog!==null && loadingDialog.isShowing){
+    fun dismissLoading(loadingDialog:Dialog?){
+        if(loadingDialog!=null && loadingDialog.isShowing){
             loadingDialog.dismiss()
         }
     }

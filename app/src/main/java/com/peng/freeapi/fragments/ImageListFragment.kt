@@ -1,7 +1,7 @@
 package com.peng.freeapi.fragments
 
+import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.peng.freeapi.R
 import com.peng.freeapi.adapter.ImageListAdapter
 import com.peng.freeapi.interfaces.GetRequest_Interface
-import com.peng.freeapi.model.SimpleDividerLinear
 import com.peng.freeapi.model.DataResponse
 import com.peng.freeapi.model.ImageModel
 import com.peng.freeapi.model.SimpleDividerGrid
@@ -22,12 +21,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ImageListFragment : Fragment() {
+class ImageListFragment : BaseLazyFragment() {
 
     lateinit var mListView: XRecyclerView
-    var mCurrentPage : Int = 1
+    var mCurrentPage: Int = 1
+    var loadingDialog: Dialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun initViews(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         val view = inflater.inflate(R.layout.namelistfragment, container, false)
 
@@ -35,9 +35,9 @@ class ImageListFragment : Fragment() {
 //        mListView.setLimitNumberToCallLoadMore(2)
         mListView.setRefreshProgressStyle(ProgressStyle.BallClipRotateMultiple)
         mListView.addItemDecoration(SimpleDividerGrid(context!!))
-        mListView.layoutManager = GridLayoutManager(context,2,GridLayoutManager.VERTICAL,false)
+        mListView.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
 
-        mListView.setLoadingListener(object : XRecyclerView.LoadingListener{
+        mListView.setLoadingListener(object : XRecyclerView.LoadingListener {
             override fun onLoadMore() {
                 loadData(++mCurrentPage)
             }
@@ -48,12 +48,18 @@ class ImageListFragment : Fragment() {
 
         })
 
-        loadData(1)
-
         return view
     }
 
-    private fun loadData(page:Int = 1) {
+    override fun initData() {
+        loadData(1)
+    }
+
+    override fun setDefaultFragmentTitle(title: String?) {
+
+    }
+
+    private fun loadData(page: Int = 1) {
         mCurrentPage = page
         val request = NetUtil.getRetrofit()?.create(GetRequest_Interface::class.java)
         request?.getImageList(page)?.enqueue(object : Callback<DataResponse<ArrayList<ImageModel>>> {
@@ -62,21 +68,22 @@ class ImageListFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<DataResponse<ArrayList<ImageModel>>>?, response: Response<DataResponse<ArrayList<ImageModel>>>?) {
-                var adapter: ImageListAdapter
+                val adapter: ImageListAdapter
                 if (mListView.adapter != null) {
                     adapter = mListView.adapter as ImageListAdapter
-                    if(page === 1) {
-                        adapter.setData(response?.body()?.data)
-                    }else if(response?.body()?.data !== null){
-                        adapter.addData(response?.body()?.data!!)
+                    if (page == 1) {
+                        adapter.setData(response?.body()?.results)
+                    } else if (response?.body()?.results !== null) {
+                        adapter.addData(response.body()?.results!!)
                     }
                     mListView.refreshComplete()
                 } else {
                     adapter = if (response === null || response.body() === null) {
                         ImageListAdapter(activity!!)
                     } else {
-                        ImageListAdapter(activity!!, response.body()!!.data)
+                        ImageListAdapter(activity!!, response.body()!!.results)
                     }
+                    CommonUtil.dismissLoading(loadingDialog)
                     mListView.adapter = adapter
                 }
             }

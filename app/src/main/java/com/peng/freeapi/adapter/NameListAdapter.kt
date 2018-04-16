@@ -24,7 +24,7 @@ class NameListAdapter(context: Context, nameList: ArrayList<Name> = ArrayList<Na
     }
 
     override fun onBindViewHolder(holder: NameListHolder, position: Int) {
-        holder.name.text = mNameList[position].femalename
+        holder.name.text = mNameList[position].desc
         holder.index.text = "${position+1}、"
     }
 

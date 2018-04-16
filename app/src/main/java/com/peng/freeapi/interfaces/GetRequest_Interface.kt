@@ -12,11 +12,17 @@ import retrofit2.http.Url
 
 interface GetRequest_Interface {
 
-    @GET("femaleNameApi")
-    fun getNameList(@Query("page") page:Int) : Call<DataResponse<ArrayList<Name>>>
+//    @GET("femaleNameApi")
+//    fun getNameList(@Query("page") page:Int) : Call<DataResponse<ArrayList<Name>>>
+//
+//    @GET("meituApi")
+//    fun getImageList(@Query("page") page:Int) : Call<DataResponse<ArrayList<ImageModel>>>
 
-    @GET("meituApi")
-    fun getImageList(@Query("page") page:Int) : Call<DataResponse<ArrayList<ImageModel>>>
+    @GET("api/data/福利/10/{page}")
+    fun getNameList(@Path("page") page:Int) : Call<DataResponse<ArrayList<Name>>>
+
+    @GET("api/data/福利/10/{page}")
+    fun getImageList(@Path("page") page:Int) : Call<DataResponse<ArrayList<ImageModel>>>
 
     @GET
     fun downloadImage(@Url url:String) : Call<ResponseBody>

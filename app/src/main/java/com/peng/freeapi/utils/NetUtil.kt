@@ -19,7 +19,8 @@ object NetUtil {
     fun getRetrofit() : Retrofit?{
         if(mRetrofit === null){
             mRetrofit = Retrofit.Builder()
-                    .baseUrl("https://www.apiopen.top/")
+//                    .baseUrl("https://www.apiopen.top/")
+                    .baseUrl("http://gank.io/")
                     .addConverterFactory(GsonConverterFactory.create()).build()
         }
         return mRetrofit

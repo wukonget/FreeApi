@@ -1,6 +1,5 @@
 package com.peng.freeapi.activitys
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -9,14 +8,13 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.Menu
 import android.view.MenuItem
+import cn.bertsir.zbar.QrConfig
+import cn.bertsir.zbar.QrManager
 import com.peng.freeapi.R
 import com.peng.freeapi.fragments.ImageListFragment
 import com.peng.freeapi.fragments.NameListFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import android.widget.Toast
-import cn.bertsir.zbar.QrManager
-import cn.bertsir.zbar.QrConfig
 import com.peng.freeapi.utils.CommonUtil
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 /**
@@ -24,8 +22,6 @@ import com.peng.freeapi.utils.CommonUtil
  */
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    private val QR_CODE = 111
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +32,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         setViewPagerAndTab()
 
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "提示", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//        }
+        navigationView.setNavigationItemSelectedListener(this@MainActivity)
+
     }
 
     private fun setViewPagerAndTab() {
@@ -58,8 +52,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         viewpager.adapter = ViewPagerAdapter(titles, pagerList, supportFragmentManager)
 
         tabLayout.setupWithViewPager(viewpager,true)
-
-        navigationView.setNavigationItemSelectedListener(this@MainActivity)
 
     }
 
@@ -117,9 +109,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
 
-    class ViewPagerAdapter(titles:ArrayList<String> = ArrayList<String>(),pagerList:ArrayList<Fragment> = ArrayList<Fragment>(),fm:FragmentManager) : FragmentPagerAdapter (fm){
-        private var pagerList = pagerList
-        private var titles = titles
+    class ViewPagerAdapter(private var titles: ArrayList<String> = ArrayList<String>(), private var pagerList: ArrayList<Fragment> = ArrayList<Fragment>(), fm:FragmentManager) : FragmentPagerAdapter (fm){
 
         override fun getItem(position: Int): Fragment {
             return pagerList[position]

@@ -5,5 +5,5 @@ package com.peng.freeapi.model
  */
 
 data class Name(
-     val femalename:String
+     val desc:String
 )
