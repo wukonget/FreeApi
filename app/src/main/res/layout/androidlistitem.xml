@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/radius_3"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="@dimen/margin12"
+    android:foreground="?android:attr/selectableItemBackground"
+    >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/who"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="作者"
+            android:textColor="@color/textColor_black"
+            android:textSize="@dimen/textSize_small" />
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/who"
+            android:layout_marginTop="@dimen/margin4"
+            android:background="@drawable/thirty_white"
+            android:text="描述"
+            android:textColor="@color/textColor_black"
+            android:textSize="@dimen/textSize_normal" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/imageheight"
+            android:layout_below="@id/desc"
+            android:scaleType="centerInside"
+            android:layout_marginTop="@dimen/margin4"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/publishedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/image"
+            android:layout_marginTop="@dimen/margin4"
+            android:text="时间" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

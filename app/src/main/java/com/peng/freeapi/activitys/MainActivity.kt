@@ -11,6 +11,7 @@ import android.view.MenuItem
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import com.peng.freeapi.R
+import com.peng.freeapi.fragments.AndroidFragment
 import com.peng.freeapi.fragments.ImageListFragment
 import com.peng.freeapi.fragments.NameListFragment
 import com.peng.freeapi.utils.CommonUtil
@@ -40,14 +41,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         val nameListFragment = NameListFragment()
         val imageListFragment = ImageListFragment()
+        val androidFragment = AndroidFragment()
 
         val titles = ArrayList<String>()
         val pagerList = ArrayList<Fragment>()
 
         titles.add("个性网名")
         titles.add("美图欣赏")
+        titles.add("Android")
         pagerList.add(nameListFragment)
         pagerList.add(imageListFragment)
+        pagerList.add(androidFragment)
 
         viewpager.adapter = ViewPagerAdapter(titles, pagerList, supportFragmentManager)
 

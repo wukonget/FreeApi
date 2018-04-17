@@ -2,12 +2,13 @@ package com.peng.freeapi.fragments
 
 import android.app.Dialog
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jcodecraeer.xrecyclerview.ProgressStyle
-import com.jcodecraeer.xrecyclerview.XRecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.peng.freeapi.R
 import com.peng.freeapi.adapter.NameListAdapter
 import com.peng.freeapi.interfaces.GetRequest_Interface
@@ -22,7 +23,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class NameListFragment : BaseLazyFragment() {
-    lateinit var mListView: XRecyclerView
+    lateinit var mListView: RecyclerView
+    lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     var mCurrentPage: Int = 1
     var loadingDialog: Dialog? = null
 
@@ -30,22 +32,11 @@ class NameListFragment : BaseLazyFragment() {
         val view = inflater.inflate(R.layout.namelistfragment, container, false)
 
         mListView = view.nameListView
-//        mListView.setLimitNumberToCallLoadMore(2)
-        mListView.setRefreshProgressStyle(ProgressStyle.BallClipRotateMultiple)
+        mSwipeRefreshLayout = view.swipeRefreshLayout
         mListView.addItemDecoration(SimpleDividerLinear(context!!))
         mListView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        mListView.setLoadingListener(object : XRecyclerView.LoadingListener {
-            override fun onLoadMore() {
-                loadData(++mCurrentPage)
-            }
-
-            override fun onRefresh() {
-                loadData(1)
-            }
-
-        })
-
+        mSwipeRefreshLayout.setOnRefreshListener { loadData(1) }
         return view
     }
 
@@ -59,29 +50,40 @@ class NameListFragment : BaseLazyFragment() {
 
     private fun loadData(page: Int = 1) {
         mCurrentPage = page
-
+        mSwipeRefreshLayout.isRefreshing = true
         val request = NetUtil.getRetrofit()?.create(GetRequest_Interface::class.java)
         request?.getNameList(page)?.enqueue(object : Callback<DataResponse<ArrayList<Name>>> {
             override fun onFailure(call: Call<DataResponse<ArrayList<Name>>>?, t: Throwable?) {
+                if (mListView.adapter == null) {
+                    mListView.adapter = NameListAdapter(R.layout.namelistitem)
+                }
+                mSwipeRefreshLayout.isRefreshing = false
                 CommonUtil.showToast("请求失败，请重试")
             }
 
             override fun onResponse(call: Call<DataResponse<ArrayList<Name>>>?, response: Response<DataResponse<ArrayList<Name>>>?) {
+                mSwipeRefreshLayout.isRefreshing = false
                 val adapter: NameListAdapter
                 if (mListView.adapter != null) {
                     adapter = mListView.adapter as NameListAdapter
                     if (page == 1) {
-                        adapter.setData(response?.body()?.results)
+                        adapter.setNewData(response?.body()?.results)
                     } else if (response?.body()?.results !== null) {
                         adapter.addData(response.body()?.results!!)
                     }
-                    mListView.refreshComplete()
                 } else {
                     adapter = if (response === null || response.body() === null) {
-                        NameListAdapter(context!!)
+                        NameListAdapter(R.layout.namelistitem)
                     } else {
-                        NameListAdapter(context!!, response.body()!!.results)
+                        NameListAdapter(R.layout.namelistitem, response.body()!!.results)
                     }
+                    adapter.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener{
+                        override fun onLoadMoreRequested() {
+                            loadData(++mCurrentPage)
+                        }
+
+                    })
+                    adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
                     CommonUtil.dismissLoading(loadingDialog)
                     mListView.adapter = adapter
                 }

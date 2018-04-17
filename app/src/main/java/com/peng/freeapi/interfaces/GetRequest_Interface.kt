@@ -1,5 +1,6 @@
 package com.peng.freeapi.interfaces
 
+import com.peng.freeapi.model.AndroidData
 import com.peng.freeapi.model.Name
 import com.peng.freeapi.model.DataResponse
 import com.peng.freeapi.model.ImageModel
@@ -18,11 +19,14 @@ interface GetRequest_Interface {
 //    @GET("meituApi")
 //    fun getImageList(@Query("page") page:Int) : Call<DataResponse<ArrayList<ImageModel>>>
 
-    @GET("api/data/福利/10/{page}")
+    @GET("api/data/福利/20/{page}")
     fun getNameList(@Path("page") page:Int) : Call<DataResponse<ArrayList<Name>>>
 
-    @GET("api/data/福利/10/{page}")
+    @GET("api/data/福利/20/{page}")
     fun getImageList(@Path("page") page:Int) : Call<DataResponse<ArrayList<ImageModel>>>
+
+    @GET("api/data/Android/20/{page}")
+    fun getAndroidList(@Path("page") page:Int) : Call<DataResponse<MutableList<AndroidData>>>
 
     @GET
     fun downloadImage(@Url url:String) : Call<ResponseBody>

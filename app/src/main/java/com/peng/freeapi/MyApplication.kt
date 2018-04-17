@@ -1,6 +1,7 @@
 package com.peng.freeapi
 
 import android.app.Application
+import com.vondear.rxtools.RxTool
 
 class MyApplication : Application() {
 
@@ -13,6 +14,7 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        RxTool.init(this)
     }
 
 }
