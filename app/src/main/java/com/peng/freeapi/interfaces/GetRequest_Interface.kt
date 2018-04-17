@@ -1,9 +1,6 @@
 package com.peng.freeapi.interfaces
 
-import com.peng.freeapi.model.AndroidData
-import com.peng.freeapi.model.Name
-import com.peng.freeapi.model.DataResponse
-import com.peng.freeapi.model.ImageModel
+import com.peng.freeapi.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -30,5 +27,9 @@ interface GetRequest_Interface {
 
     @GET
     fun downloadImage(@Url url:String) : Call<ResponseBody>
+
+
+    @GET("banner/json")
+    fun getBannerList():Call<WanResponse<MutableList<BannerModel>>>
 
 }

@@ -6,8 +6,11 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import cn.bertsir.zbar.QrConfig
 import cn.bertsir.zbar.QrManager
 import com.peng.freeapi.R
@@ -24,6 +27,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private var navId = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,6 +39,24 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setViewPagerAndTab()
 
         navigationView.setNavigationItemSelectedListener(this@MainActivity)
+
+        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener{
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                when(navId) {
+                    R.id.toWanAndroid -> WanAndroidActivity.launch(this@MainActivity)
+                }
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+            }
+
+        })
 
     }
 
@@ -77,8 +100,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         return when(item.itemId){
-            R.id.toJoke -> {
-                CommonUtil.showToast("去段子页面")
+            R.id.toWanAndroid -> {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawers()
+                }
+                CommonUtil.showToast("去玩安卓页面")
+                navId = R.id.toWanAndroid
                 true
             }
             else -> false

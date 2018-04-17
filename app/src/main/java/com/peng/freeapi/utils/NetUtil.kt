@@ -15,6 +15,7 @@ import java.io.IOException
 object NetUtil {
 
     var mRetrofit : Retrofit? = null
+    var mWanRetrofit : Retrofit? = null
 
     fun getRetrofit() : Retrofit?{
         if(mRetrofit === null){
@@ -24,6 +25,15 @@ object NetUtil {
                     .addConverterFactory(GsonConverterFactory.create()).build()
         }
         return mRetrofit
+    }
+
+    fun getWanRetrofit() : Retrofit?{
+        if(mWanRetrofit === null){
+            mWanRetrofit = Retrofit.Builder()
+                    .baseUrl("http://www.wanandroid.com/")
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+        }
+        return mWanRetrofit
     }
 
     /**

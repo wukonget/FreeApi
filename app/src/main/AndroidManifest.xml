@@ -30,6 +30,11 @@
             android:name=".activitys.PictureViewActivity"
             android:theme="@style/ImageTranslucentTheme">
         </activity>
+
+        <activity
+            android:name=".activitys.WanAndroidActivity"
+            android:theme="@style/ImageTranslucentTheme">
+        </activity>
     </application>
 
 </manifest>

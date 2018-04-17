@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:icon="@drawable/ic_joke_pink"
-        android:id="@+id/toJoke"
-        android:title="@string/nav_joke_title"/>
+        android:id="@+id/toWanAndroid"
+        android:title="@string/nav_wanandroid_title"/>
 
 </menu>
