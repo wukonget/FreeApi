@@ -1,6 +1,7 @@
 package com.peng.freeapi.fragments
 
 import android.app.Dialog
+import android.media.Image
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
@@ -61,6 +62,7 @@ class ImageListFragment : BaseLazyFragment() {
                 if (mListView.adapter == null) {
                     mListView.adapter = ImageListAdapter(R.layout.imagelistitem)
                 }
+                (mListView.adapter as ImageListAdapter).loadMoreFail()
                 mSwipeRefreshLayout.isRefreshing = false
                 CommonUtil.showToast("请求失败，请重试")
             }
@@ -68,26 +70,25 @@ class ImageListFragment : BaseLazyFragment() {
             override fun onResponse(call: Call<DataResponse<ArrayList<ImageModel>>>?, response: Response<DataResponse<ArrayList<ImageModel>>>?) {
                 val adapter: ImageListAdapter
                 mSwipeRefreshLayout.isRefreshing = false
+                val resultDatas = response?.body()?.results ?: ArrayList<ImageModel>()
                 if (mListView.adapter != null) {
                     adapter = mListView.adapter as ImageListAdapter
                     if (page == 1) {
-                        adapter.setNewData(response?.body()?.results)
-                    } else if (response?.body()?.results !== null) {
-                        adapter.addData(response.body()?.results!!)
+                        adapter.setNewData(resultDatas)
+                    } else if (resultDatas.size>0) {
+                        adapter.addData(resultDatas)
+                        adapter.loadMoreComplete()
+                    }else{
+                        adapter.loadMoreEnd()
                     }
                 } else {
                     adapter = if (response === null || response.body() === null) {
                         ImageListAdapter(R.layout.imagelistitem)
                     } else {
-                        ImageListAdapter(R.layout.imagelistitem, response.body()!!.results)
+                        ImageListAdapter(R.layout.imagelistitem, resultDatas)
                     }
                     adapter.setOnItemClickListener { adapter, view, position -> PictureViewActivity.launch(activity!!, adapter!!.data as java.util.ArrayList<ImageModel>,position) }
-                    adapter.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener{
-                        override fun onLoadMoreRequested() {
-                            loadData(++mCurrentPage)
-                        }
-
-                    })
+                    adapter.setOnLoadMoreListener { loadData(++mCurrentPage) }
                     adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
                     CommonUtil.dismissLoading(loadingDialog)
                     mListView.adapter = adapter

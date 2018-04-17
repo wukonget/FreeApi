@@ -62,34 +62,36 @@ class AndroidFragment : BaseLazyFragment() {
                 if (mListView.adapter == null) {
                     mListView.adapter = AndroidAdapter(R.layout.androidlistitem)
                 }
+                (mListView.adapter as AndroidAdapter).loadMoreFail()
                 mSwipeRefreshLayout.isRefreshing = false
             }
 
             override fun onResponse(call: Call<DataResponse<MutableList<AndroidData>>>?, response: Response<DataResponse<MutableList<AndroidData>>>?) {
                 val adapter: AndroidAdapter
                 mSwipeRefreshLayout.isRefreshing = false
+                val resultDatas = response?.body()?.results ?: ArrayList<AndroidData>()
                 if (mListView.adapter != null) {
                     adapter = mListView.adapter as AndroidAdapter
                     if (page == 1) {
-                        adapter.setNewData(response?.body()?.results)
-                    } else if (response?.body()?.results !== null) {
-                        adapter.addData(response.body()?.results!!)
+                        adapter.setNewData(resultDatas)
+                    } else if (resultDatas.size>0) {
+                        adapter.addData(resultDatas)
+                        adapter.loadMoreComplete()
+                    }else{
+                        adapter.loadMoreEnd()
                     }
                 } else {
                     adapter = if (response === null || response.body() === null) {
                         AndroidAdapter(R.layout.androidlistitem)
                     } else {
-                        AndroidAdapter(R.layout.androidlistitem, response.body()!!.results)
+                        AndroidAdapter(R.layout.androidlistitem, resultDatas)
                     }
-                    adapter.onItemClickListener = object : BaseQuickAdapter.OnItemClickListener{
-                        override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-                            val url = (adapter!!.data[position] as AndroidData).url
-                            val uri = Uri.parse(url)
-                            val intent = Intent(Intent.ACTION_VIEW, uri)
-                            startActivity(intent)
-//                        startActivity(Intent(activity,ActivityWebView::class.java))
-                        }
-
+                    adapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+                        val url = (adapter!!.data[position] as AndroidData).url
+                        val uri = Uri.parse(url)
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        startActivity(intent)
+                        //                        startActivity(Intent(activity,ActivityWebView::class.java))
                     }
                     adapter.setOnLoadMoreListener(BaseQuickAdapter.RequestLoadMoreListener { loadData(++mCurrentPage) },mListView)
                     adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)

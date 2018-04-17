@@ -57,6 +57,7 @@ class NameListFragment : BaseLazyFragment() {
                 if (mListView.adapter == null) {
                     mListView.adapter = NameListAdapter(R.layout.namelistitem)
                 }
+                (mListView.adapter as NameListAdapter).loadMoreFail()
                 mSwipeRefreshLayout.isRefreshing = false
                 CommonUtil.showToast("请求失败，请重试")
             }
@@ -64,25 +65,24 @@ class NameListFragment : BaseLazyFragment() {
             override fun onResponse(call: Call<DataResponse<ArrayList<Name>>>?, response: Response<DataResponse<ArrayList<Name>>>?) {
                 mSwipeRefreshLayout.isRefreshing = false
                 val adapter: NameListAdapter
+                val resultDatas = response?.body()?.results ?: ArrayList<Name>()
                 if (mListView.adapter != null) {
                     adapter = mListView.adapter as NameListAdapter
                     if (page == 1) {
-                        adapter.setNewData(response?.body()?.results)
-                    } else if (response?.body()?.results !== null) {
-                        adapter.addData(response.body()?.results!!)
+                        adapter.setNewData(resultDatas)
+                    } else if (resultDatas.size>0) {
+                        adapter.addData(resultDatas)
+                        adapter.loadMoreComplete()
+                    }else{
+                        adapter.loadMoreEnd()
                     }
                 } else {
                     adapter = if (response === null || response.body() === null) {
                         NameListAdapter(R.layout.namelistitem)
                     } else {
-                        NameListAdapter(R.layout.namelistitem, response.body()!!.results)
+                        NameListAdapter(R.layout.namelistitem, resultDatas)
                     }
-                    adapter.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener{
-                        override fun onLoadMoreRequested() {
-                            loadData(++mCurrentPage)
-                        }
-
-                    })
+                    adapter.setOnLoadMoreListener { loadData(++mCurrentPage) }
                     adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
                     CommonUtil.dismissLoading(loadingDialog)
                     mListView.adapter = adapter
