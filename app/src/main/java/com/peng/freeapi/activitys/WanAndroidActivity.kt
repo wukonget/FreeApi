@@ -10,10 +10,12 @@ import android.view.MotionEvent
 import android.view.View
 import com.peng.freeapi.R
 import com.peng.freeapi.adapter.BannerAdapter
+import com.peng.freeapi.anim.ScaleAnimViewPager
 import com.peng.freeapi.interfaces.GetRequest_Interface
 import com.peng.freeapi.model.BannerModel
 import com.peng.freeapi.model.ImageModel
 import com.peng.freeapi.model.WanResponse
+import com.peng.freeapi.utils.CommonUtil
 import com.peng.freeapi.utils.NetUtil
 import kotlinx.android.synthetic.main.activity_wanandroid.*
 import retrofit2.Call
@@ -66,6 +68,10 @@ class WanAndroidActivity : BaseActivity() {
     private fun initViews() {
 
         mAdapter = BannerAdapter(this,banner,dot_container)
+        banner.pageMargin=0
+        banner.offscreenPageLimit = 3
+        banner.setPageTransformer(true,ScaleAnimViewPager())
+        CommonUtil.setViewPagerScroller(banner)
         banner.adapter = mAdapter
 
     }
